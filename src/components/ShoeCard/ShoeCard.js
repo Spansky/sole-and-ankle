@@ -35,12 +35,22 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
+          <Flag style={{
+           '--color': variant === 'on-sale' ? 'red' :
+           variant === 'new-release' ? 'purple' : ''
+          }}>{
+            variant === 'on-sale' ? 'Sale' :
+              variant === 'new-release' ? 'Just released' : ''
+            }</Flag>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price style={{ 
+            '--decoration' : salePrice > 0? 'line-through' : 'inherit',
+            '--color' : salePrice > 0? 'grey' : 'black'
+          }}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
@@ -80,7 +90,7 @@ const Name = styled.h3`
 
 const Price = styled.span`
   text-decoration: var(--decoration);
-  color: hsl(${props => props.salePrice}, 50%, 50%);
+  color: var(--color);
 `;
 
 const ColorInfo = styled.p`
@@ -91,5 +101,14 @@ const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
 `;
+
+const Flag = styled.div`
+  position: absolute;
+  top: 8px;
+  right: -8px;
+  color: white;
+  padding: 8px;
+  background: var(--color);
+  `
 
 export default ShoeCard;
